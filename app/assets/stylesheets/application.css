@@ -13,3 +13,14 @@
  *= require_tree .
  *= require_self
  */
+a {
+    text-decoration: none;
+}
+.product-listing {
+    font-size: 14px;
+}
+.product-listing .name { font-size: 16px; }
+.product-listing .name a { color: #a20025; }
+.product-listing .name a:hover { color: #ff0000; }
+.product-listing .price .number { font-size: 18px; color: #a20025; }
+.product-listing .stock-quantity { font-size: 13px; }

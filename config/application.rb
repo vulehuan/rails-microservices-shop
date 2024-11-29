@@ -23,5 +23,7 @@ module Shop
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.product_service_url = ENV.fetch("PRODUCT_SERVICE_URL", "http://localhost:3001")
+    config.hosts << "shop.local"
   end
 end

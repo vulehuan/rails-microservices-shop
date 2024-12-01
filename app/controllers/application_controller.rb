@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
-  allow_browser versions: :modern
+  before_action :load_categories
 
   rescue_from StandardError, with: :handle_error
   rescue_from CanCan::AccessDenied, with: :access_denied
@@ -17,6 +16,27 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def load_categories
+    cache_key = 'categories'
+    cached_categories = Rails.cache.read(cache_key)
+    @categories = cached_categories and return if cached_categories
+
+    response = HTTParty.get(
+      "#{Rails.application.config.product_service_url}/api/v1/categories?per_page=48",
+      headers: {
+        "Authorization" => "Bearer #{fetch_jwt_token}",
+        "Content-Type" => "application/json"
+      }
+    )
+    if response.success?
+      @categories = response.parsed_response['data']
+      Rails.cache.write(cache_key, @categories, expires_in: 1.hour) if @categories.present?
+    else
+      @categories = []
+      Rails.logger.error("Failed to fetch categories: #{response.message}")
+    end
+  end
 
   def handle_error(exception)
     # SendErrorToSentryJob.perform_later(exception)

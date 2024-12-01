@@ -1,18 +1,9 @@
 require 'rails_helper'
-require 'webmock/rspec'
 
 RSpec.describe "HomeController", type: :request do
-  let(:user_token) { jwt_token_for('user') }
 
   before do
-    stub_request(:get, "#{Rails.application.config.product_service_url}/api/v1/products")
-      .with(headers: {
-        'Accept' => '*/*',
-        'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-        'Authorization' => "Bearer #{user_token}",
-        'Content-Type' => 'application/json',
-        'User-Agent' => 'Ruby'
-      })
+    stub_request(:get, "#{Rails.application.config.product_service_url}/api/v1/products?per_page=48")
       .to_return(
         status: 200,
         body: {

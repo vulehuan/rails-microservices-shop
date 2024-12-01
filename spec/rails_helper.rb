@@ -11,6 +11,7 @@ require 'rspec/rails'
 require 'factory_bot_rails'
 require 'database_cleaner/active_record'
 require 'simplecov'
+require 'webmock/rspec'
 SimpleCov.start 'rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -36,6 +37,7 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+WebMock.disable_net_connect!(allow_localhost: true)
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
@@ -83,5 +85,22 @@ RSpec.configure do |config|
     DatabaseCleaner.cleaning do
       example.run
     end
+  end
+
+  config.before(:each, type: :request) do
+    host! "shop.local"
+  end
+
+  config.before(:each) do
+    stub_request(:get, "#{Rails.application.config.product_service_url}/api/v1/categories?per_page=48")
+      .to_return(status: 200, 
+        body: {"data":[{
+            "id":1,"name":"Category 1","weight":"0.0","status":true},
+            {"id":2,"name":"Category 2","weight":"0.0","status":true},
+          ],"meta":{
+            "next_url":"/api/v1/categories?page=2",
+            }
+          }.to_json,
+        headers: { 'Content-Type' => 'application/json' })
   end
 end

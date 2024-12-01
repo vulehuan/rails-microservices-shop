@@ -13,6 +13,10 @@
  *= require_tree .
  *= require_self
  */
+body {
+    padding: 63px 0 15px;
+}
+
 a {
     text-decoration: none;
 }
@@ -24,3 +28,24 @@ a {
 .product-listing .name a:hover { color: #ff0000; }
 .product-listing .price .number { font-size: 18px; color: #a20025; }
 .product-listing .stock-quantity { font-size: 13px; }
+
+.bg-navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #a20025;
+    color: #fff;
+    font-size: 1.25rem;
+    z-index: 2;
+}
+.bg-navbar a  {
+    color: #fff;
+}
+.bg-navbar a:hover {
+    color: #ffff00;
+}
+.navbar-toggler {
+    color: #fff;
+}

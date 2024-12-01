@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand-lg bg-navbar">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">Home</a>
+        </li>
+        <% @categories.each do |category| %>
+          <li class="nav-item">
+            <a class="nav-link" href="">
+              <%= category['name'] %>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Enter product name" aria-label="Search">
+        <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+      </form>
+    </div>
+  </div>
+</nav>
